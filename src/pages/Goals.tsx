@@ -5,7 +5,35 @@ import { formatCurrency, cn } from '../lib/utils';
 
 export function Goals() {
   const [showAddForm, setShowAddForm] = useState(false);
+  const [goalData, setGoalData] = useState({
+    name: "",
+    targetAmount: "",
+    currentAmount: "",
+    targetDate: ""
+  });
+  const handleChange = (e) => {
+    setGoalData({
+      ...goalData,
+      [e.target.name]: e.target.value
+    });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
+    console.log(goalData);
+
+    // later connect API
+    // axios.post("/api/goals", goalData)
+
+    setGoalData({
+      name: "",
+      targetAmount: "",
+      currentAmount: "",
+      targetDate: ""
+    });
+
+    setShowAddForm(false);
+  };
   if (showAddForm) {
     return (
       <div className="space-y-6">
@@ -25,113 +53,84 @@ export function Goals() {
             <p className="text-sm text-gray-500 dark:text-gray-400">Set up your new financial goal.</p>
           </div>
 
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+
             <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Goal Name</label>
-              <input 
-                type="text" 
-                placeholder="e.g. New Car, Vacation Fund"
+              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                Goal Name
+              </label>
+
+              <input
+                type="text"
+                name="name"
+                value={goalData.name}
+                onChange={handleChange}
+                placeholder="e.g New Car, Vacation Fund"
                 className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none dark:text-gray-200"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Category</label>
-              <select className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none appearance-none cursor-pointer dark:text-gray-200">
-                <option value="">Select category</option>
-                <option value="travel">Travel</option>
-                <option value="savings">Savings</option>
-                <option value="purchase">Purchase</option>
-                <option value="investment">Investment</option>
-              </select>
-            </div>
+              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                Target Amount
+              </label>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Target Amount</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">$</span>
-                  <input 
-                    type="number" 
-                    placeholder="0.00"
-                    className="w-full pl-8 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none dark:text-gray-200"
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Current Amount (Optional)</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">$</span>
-                  <input 
-                    type="number" 
-                    placeholder="0.00"
-                    className="w-full pl-8 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none dark:text-gray-200"
-                  />
-                </div>
-                <p className="text-[10px] text-gray-400 dark:text-gray-500">If you've already saved some amount towards this goal.</p>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Target Date</label>
-              <input 
-                type="date" 
+              <input
+                type="number"
+                name="targetAmount"
+                value={goalData.targetAmount}
+                onChange={handleChange}
+                placeholder="Enter target amount"
                 className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none dark:text-gray-200"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Associated Wallet</label>
-              <select className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none appearance-none cursor-pointer dark:text-gray-200">
-                <option value="">Select wallet</option>
-                <option value="main-savings">Main Savings</option>
-                <option value="checking">Checking Account</option>
-              </select>
-              <p className="text-[10px] text-gray-400 dark:text-gray-500">The wallet where funds for this goal will be stored.</p>
+              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                Current Amount
+              </label>
+
+              <input
+                type="number"
+                name="currentAmount"
+                value={goalData.currentAmount}
+                onChange={handleChange}
+                placeholder="Enter saved amount"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none dark:text-gray-200"
+              />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Priority</label>
-              <div className="flex items-center gap-6">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" name="priority" value="high" className="w-4 h-4 text-emerald-500 focus:ring-emerald-500" />
-                  <span className="text-sm font-bold text-rose-500">High</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" name="priority" value="medium" defaultChecked className="w-4 h-4 text-emerald-500 focus:ring-emerald-500" />
-                  <span className="text-sm font-bold text-emerald-500">Medium</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" name="priority" value="low" className="w-4 h-4 text-emerald-500 focus:ring-emerald-500" />
-                  <span className="text-sm font-bold text-amber-500">Low</span>
-                </label>
-              </div>
-            </div>
+              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                Target Date
+              </label>
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Notes (Optional)</label>
-              <textarea 
-                placeholder="Add any additional details about this goal"
-                rows={3}
-                className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none resize-none dark:text-gray-200"
-              ></textarea>
+              <input
+                type="date"
+                name="targetDate"
+                value={goalData.targetDate}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none dark:text-gray-200"
+              />
             </div>
 
             <div className="flex items-center justify-between pt-4">
-              <button 
+              <button
                 type="button"
                 onClick={() => setShowAddForm(false)}
                 className="px-6 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-bold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
                 Cancel
               </button>
-              <button 
+
+              <button
                 type="submit"
                 className="px-8 py-2.5 bg-emerald-500 text-white rounded-xl text-sm font-bold hover:bg-emerald-600 shadow-lg shadow-emerald-500/20 transition-all"
               >
                 Create Goal
               </button>
             </div>
+
           </form>
         </div>
       </div>
@@ -217,20 +216,11 @@ export function Goals() {
         <div className="flex items-center gap-4 flex-1">
           
           <div className="flex items-center gap-2 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-1 rounded-xl transition-colors">
-            <button className="px-4 py-1.5 bg-emerald-500 text-white rounded-lg text-xs font-bold">All Goals 5</button>
+            <button className="px-4 py-1.5 bg-emerald-500 text-white rounded-lg text-xs font-bold">All Goals </button>
             <button className="px-4 py-1.5 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg text-xs font-bold">Active 3</button>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-            <Filter className="w-4 h-4" />
-            Filter
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-            <ArrowUpDown className="w-4 h-4" />
-            Sort
-          </button>
-        </div>
+        
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

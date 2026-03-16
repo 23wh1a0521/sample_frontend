@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -56,15 +57,77 @@ const stats = [
 ];
 
 const quickActions = [
-  { icon: Plus, label: 'Add Money', sub: 'Deposit funds to your wallet' },
-  { icon: Send, label: 'Send Money', sub: 'Transfer to friends or family' },
-  { icon: CreditCard, label: 'Pay Bills', sub: 'Pay your recurring bills' },
-  { icon: ArrowRightLeft, label: 'Transfer', sub: 'Move money between wallets' },
-  { icon: WalletIcon, label: 'My Wallets', sub: 'View and manage your wallets' },
-  { icon: BarChart3, label: 'Reports', sub: 'View your spending patterns' },
+  { icon: Plus, label: 'Add Budget', route: '/budget' },
+  { icon: Send, label: 'Add Money', route: '/wallets' },
+  { icon: CreditCard, label: 'Add Goal', route: '/goals' },
+  { icon: ArrowRightLeft, label: 'Ask Agent', route: '/ask-agent' },
+  { icon: WalletIcon, label: 'View Profile', route: '/profile' },
+  { icon: BarChart3, label: 'Reports', route: '/reports' },
 ];
 
+
 export function Dashboard() {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const navigate = useNavigate();
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+
+  const months = [
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
+  ];
+
+  const years = Array.from({ length: 10 }, (_, i) => year - 5 + i);
+
+  const handleMonthChange = (e) => {
+    const newMonth = parseInt(e.target.value);
+    setCurrentDate(new Date(year, newMonth, 1));
+  };
+
+  const handleYearChange = (e) => {
+    const newYear = parseInt(e.target.value);
+    setCurrentDate(new Date(newYear, month, 1));
+  };
+
+  const prevMonth = () => {
+    setCurrentDate(new Date(year, month - 1, 1));
+  };
+
+  const nextMonth = () => {
+    setCurrentDate(new Date(year, month + 1, 1));
+  };
+
+
+  const monthLabel = currentDate.toLocaleString("default", {
+    month: "long",
+    year: "numeric",
+  });
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const calendarDays = useMemo(() => {
+    const blanks = Array(firstDay).fill(null);
+    const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+    return [...blanks, ...days];
+  }, [firstDay, daysInMonth]);
+
+  /* Example spending data */
+  const spendingData = {
+    "2024-03-02": [
+      { amount: 75, type: "normal" },
+      { amount: 120, type: "high" }
+    ],
+    "2024-03-11": [
+      { amount: 2150, type: "low" }
+    ]
+  };
+
+  const getSpending = (day) => {
+    if (!day) return [];
+    const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    return spendingData[dateKey] || [];
+  };
   return (
     <div className="space-y-8">
       <div>
@@ -130,16 +193,45 @@ export function Dashboard() {
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Spending Calendar</h2>
               <p className="text-sm text-gray-500 dark:text-gray-400">View your daily spending patterns.</p>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 p-1 rounded-lg">
-                <button className="p-1.5 hover:bg-white dark:hover:bg-gray-700 hover:shadow-sm rounded-md transition-all">
-                  <ChevronLeft className="w-4 h-4 dark:text-gray-200" />
-                </button>
-                <span className="text-sm font-semibold px-2 dark:text-gray-200">March 2024</span>
-                <button className="p-1.5 hover:bg-white dark:hover:bg-gray-700 hover:shadow-sm rounded-md transition-all">
-                  <ChevronRight className="w-4 h-4 dark:text-gray-200" />
-                </button>
-              </div>
+            <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 p-1 rounded-lg">
+
+              <button
+                onClick={prevMonth}
+                className="p-1.5 hover:bg-white dark:hover:bg-gray-700 rounded-md"
+              >
+                <ChevronLeft className="w-4 h-4 dark:text-gray-200" />
+              </button>
+
+              <select
+                value={month}
+                onChange={handleMonthChange}
+                className="bg-gray-50 dark:bg-gray-800 text-sm px-2 py-1 rounded-md dark:text-white"
+              >
+                {months.map((m, index) => (
+                  <option key={index} value={index}>
+                    {m}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={year}
+                onChange={handleYearChange}
+                className="bg-gray-50 dark:bg-gray-800 text-sm px-2 py-1 rounded-md dark:text-white"
+              >
+                {years.map((y) => (
+                  <option key={y} value={y}>
+                    {y}
+                  </option>
+                ))}
+              </select>
+
+              <button
+                onClick={nextMonth}
+                className="p-1.5 hover:bg-white dark:hover:bg-gray-700 rounded-md"
+              >
+                <ChevronRight className="w-4 h-4 dark:text-gray-200" />
+              </button>
             </div>
           </div>
           
@@ -149,22 +241,43 @@ export function Dashboard() {
                 {day}
               </div>
             ))}
-            {Array.from({ length: 31 }).map((_, i) => (
-              <div key={i} className="bg-white dark:bg-gray-900 min-h-[80px] p-2 relative group cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                <span className="text-xs font-medium text-gray-400 dark:text-gray-500">{i + 1}</span>
-                {i === 1 && (
-                  <div className="mt-1 space-y-1">
-                    <div className="bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] px-1.5 py-0.5 rounded-md font-bold">$75</div>
-                    <div className="bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 text-[10px] px-1.5 py-0.5 rounded-md font-bold">$120</div>
+            {calendarDays.map((day, i) => {
+                const spending = getSpending(day);
+
+                return (
+                  <div
+                    key={i}
+                    className="bg-white dark:bg-gray-900 min-h-[80px] p-2 relative group cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                  >
+                    {day && (
+                      <>
+                        <span className="text-xs font-medium text-gray-400 dark:text-gray-500">
+                          {day}
+                        </span>
+
+                        <div className="mt-1 space-y-1">
+                          {spending.map((item, idx) => (
+                            <div
+                              key={idx}
+                              className={cn(
+                                "text-[10px] px-1.5 py-0.5 rounded-md font-bold",
+                                item.type === "high" &&
+                                  "bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400",
+                                item.type === "normal" &&
+                                  "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400",
+                                item.type === "low" &&
+                                  "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                              )}
+                            >
+                              ${item.amount}
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
                   </div>
-                )}
-                {i === 10 && (
-                  <div className="mt-1">
-                    <div className="bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] px-1.5 py-0.5 rounded-md font-bold">$2,150</div>
-                  </div>
-                )}
-              </div>
-            ))}
+                );
+              })}
           </div>
           <div className="mt-6 flex items-center gap-4">
             <div className="flex items-center gap-2">
@@ -179,7 +292,7 @@ export function Dashboard() {
               <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
               <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">Low</span>
             </div>
-            <p className="ml-auto text-[10px] text-gray-400 italic">Click on a day to view details</p>
+    
           </div>
         </div>
 
@@ -189,12 +302,18 @@ export function Dashboard() {
           
           <div className="grid grid-cols-2 gap-4">
             {quickActions.map((action) => (
-              <button key={action.label} className="flex flex-col items-center text-center p-4 rounded-xl border border-gray-50 dark:border-gray-800 hover:border-emerald-100 dark:hover:border-emerald-500/30 hover:bg-emerald-50/30 dark:hover:bg-emerald-500/5 transition-all group">
+              <button
+                key={action.label}
+                onClick={() => navigate(action.route)}
+                className="flex flex-col items-center text-center p-4 rounded-xl border border-gray-50 dark:border-gray-800 hover:border-emerald-100 dark:hover:border-emerald-500/30 hover:bg-emerald-50/30 dark:hover:bg-emerald-500/5 transition-all group"
+              >
                 <div className="w-10 h-10 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 rounded-full flex items-center justify-center mb-3 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-500/20 transition-colors">
                   <action.icon className="w-5 h-5" />
                 </div>
-                <h3 className="text-xs font-bold text-gray-900 dark:text-white mb-1">{action.label}</h3>
-                <p className="text-[10px] text-gray-400 dark:text-gray-500 leading-tight">{action.sub}</p>
+
+                <h3 className="text-xs font-bold text-gray-900 dark:text-white mb-1">
+                  {action.label}
+                </h3>
               </button>
             ))}
           </div>

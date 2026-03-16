@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Wallet, 
@@ -87,12 +87,14 @@ export function Sidebar() {
             referrerPolicy="no-referrer"
           />
           {!isCollapsed && (
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+            <Link to="/profile" className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-gray-900 dark:text-white truncate hover:text-emerald-600 transition-colors">
                 {MOCK_USER.firstName} {MOCK_USER.lastName}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{MOCK_USER.email}</p>
-            </div>
+              <p className="text-xs text-gray-500 dark:text-gray-400 truncate hover:text-emerald-500">
+                {MOCK_USER.email}
+              </p>
+            </Link>
           )}
           <button 
             onClick={handleLogout}

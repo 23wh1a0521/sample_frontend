@@ -5,7 +5,26 @@ import { formatCurrency } from '../lib/utils';
 
 export function Wallets() {
   const [showAddForm, setShowAddForm] = useState(false);
+  const [walletData, setWalletData] = useState({
+      incomeType: "",
+      amount: ""
+  });
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
+    console.log(walletData);
+
+    // later connect API
+    // axios.post("/api/wallet", walletData)
+
+    setShowAddForm(false);
+  };
+  const handleChange = (e) => {
+    setWalletData({
+      ...walletData,
+      [e.target.name]: e.target.value
+    });
+  };
   if (showAddForm) {
     return (
       <div className="space-y-6">
@@ -25,74 +44,55 @@ export function Wallets() {
             <p className="text-sm text-gray-500 dark:text-gray-400">Add a new wallet to your account.</p>
           </div>
 
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+
             <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Wallet Name</label>
-              <input 
-                type="text" 
-                placeholder="e.g. Main Savings, Travel Fund"
-                className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all dark:text-gray-200"
+              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                Income Type
+              </label>
+
+              <input
+                type="text"
+                name="incomeType"
+                value={walletData.incomeType}
+                onChange={handleChange}
+                placeholder="e.g Salary, Business, Freelance"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none dark:text-gray-200"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Wallet Type</label>
-              <select className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none appearance-none cursor-pointer dark:text-gray-200">
-                <option value="">Select wallet type</option>
-                <option value="savings">Savings Account</option>
-                <option value="checking">Checking Account</option>
-                <option value="credit">Credit Card</option>
-                <option value="cash">Cash</option>
-                <option value="investment">Investment</option>
-              </select>
-            </div>
+              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                Amount
+              </label>
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Currency</label>
-              <select className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none appearance-none cursor-pointer dark:text-gray-200">
-                <option value="USD">USD - US Dollar</option>
-                <option value="EUR">EUR - Euro</option>
-                <option value="GBP">GBP - British Pound</option>
-                <option value="JPY">JPY - Japanese Yen</option>
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Initial Balance</label>
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">$</span>
-                <input 
-                  type="number" 
-                  placeholder="0.00"
-                  className="w-full pl-8 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none dark:text-gray-200"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Description (Optional)</label>
-              <textarea 
-                placeholder="Add a description for this wallet"
-                rows={3}
-                className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none resize-none dark:text-gray-200"
-              ></textarea>
+              <input
+                type="number"
+                name="amount"
+                value={walletData.amount}
+                onChange={handleChange}
+                placeholder="Enter amount"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none dark:text-gray-200"
+              />
             </div>
 
             <div className="flex items-center justify-between pt-4">
-              <button 
+              <button
                 type="button"
                 onClick={() => setShowAddForm(false)}
                 className="px-6 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-bold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
                 Cancel
               </button>
-              <button 
+
+              <button
                 type="submit"
                 className="px-8 py-2.5 bg-emerald-500 text-white rounded-xl text-sm font-bold hover:bg-emerald-600 shadow-lg shadow-emerald-500/20 transition-all"
               >
-                Create Wallet
+                Add Income
               </button>
             </div>
+
           </form>
         </div>
       </div>
@@ -115,17 +115,7 @@ export function Wallets() {
         </button>
       </div>
 
-      <div className="flex items-center gap-4">
-        
-        <button className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-          <Filter className="w-4 h-4" />
-          Filter
-        </button>
-        <button className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-          <ArrowUpDown className="w-4 h-4" />
-          Sort
-        </button>
-      </div>
+      
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {MOCK_WALLETS.map((wallet) => (

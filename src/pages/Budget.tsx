@@ -5,11 +5,37 @@ import { formatCurrency, cn } from '../lib/utils';
 
 export function Budget() {
   const [showAddForm, setShowAddForm] = useState(false);
+  const [budgetData, setBudgetData] = useState({
+    name: "",
+    category: "",
+    amount: "",
+    period: "monthly"
+  });
   const totalBudget = MOCK_BUDGETS.reduce((acc, b) => acc + b.budgeted, 0);
   const totalSpent = MOCK_BUDGETS.reduce((acc, b) => acc + b.spent, 0);
   const remaining = totalBudget - totalSpent;
   const spentPercent = (totalSpent / totalBudget) * 100;
+  const handleChange = (e) => {
+    setBudgetData({
+      ...budgetData,
+      [e.target.name]: e.target.value
+    });
+  };const handleSubmit = (e) => {
+    e.preventDefault();
 
+    console.log(budgetData);
+
+    // axios.post("/api/budgets", budgetData)
+
+    setBudgetData({
+      name: "",
+      category: "",
+      amount: "",
+      period: "monthly"
+    });
+
+    setShowAddForm(false);
+  };
   if (showAddForm) {
     return (
       <div className="space-y-6">
@@ -29,81 +55,107 @@ export function Budget() {
             <p className="text-sm text-gray-500 dark:text-gray-400">Set up the basic details for your new budget.</p>
           </div>
 
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+
+            {/* Budget Name */}
             <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Budget Name</label>
-              <input 
-                type="text" 
-                placeholder="e.g. April 2023 Budget"
+              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                Budget Name
+              </label>
+
+              <input
+                type="text"
+                name="name"
+                value={budgetData.name}
+                onChange={handleChange}
+                placeholder="e.g Food Budget"
                 className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none dark:text-gray-200"
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Budget Period</label>
-                <select className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none appearance-none cursor-pointer dark:text-gray-200">
-                  <option value="monthly">Monthly</option>
-                  <option value="weekly">Weekly</option>
-                  <option value="yearly">Yearly</option>
-                </select>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Month</label>
-                <select className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none appearance-none cursor-pointer dark:text-gray-200">
-                  <option value="april-2023">April 2023</option>
-                  <option value="may-2023">May 2023</option>
-                  <option value="june-2023">June 2023</option>
-                </select>
-              </div>
-            </div>
-
+            {/* Category */}
             <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Total Budget Amount</label>
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">$</span>
-                <input 
-                  type="number" 
-                  placeholder="3500"
-                  className="w-full pl-8 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none dark:text-gray-200"
-                />
-              </div>
-              <p className="text-[10px] text-gray-400 dark:text-gray-500">This is the total amount you plan to budget for this period.</p>
-            </div>
+              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                Category
+              </label>
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Primary Wallet</label>
-              <select className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none appearance-none cursor-pointer dark:text-gray-200">
-                <option value="main-savings">Main Savings</option>
-                <option value="checking">Checking Account</option>
+              <select
+                name="category"
+                value={budgetData.category}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none dark:text-gray-200"
+              >
+                <option value="">Select Category</option>
+                <option value="bills">Bills</option>
+                <option value="clothing">Clothing</option>
+                <option value="education">Education</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="food">Food</option>
+                <option value="gifts">Gifts</option>
+                <option value="health">Health</option>
+                <option value="furniture">Furniture</option>
+                <option value="pet">Pet</option>
+                <option value="shopping">Shopping</option>
+                <option value="transport">Transport</option>
+                <option value="fitness">Fitness</option>
+                <option value="travel">Travel</option>
+                <option value="others">Others</option>
               </select>
-              <p className="text-[10px] text-gray-400 dark:text-gray-500">The wallet from which this budget will be funded.</p>
             </div>
 
+            {/* Amount */}
             <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">Notes (Optional)</label>
-              <textarea 
-                placeholder="Add any notes about this budget"
-                rows={3}
-                className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none resize-none dark:text-gray-200"
-              ></textarea>
+              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                Budget Amount
+              </label>
+
+              <input
+                type="number"
+                name="amount"
+                value={budgetData.amount}
+                onChange={handleChange}
+                placeholder="Enter amount"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none dark:text-gray-200"
+              />
             </div>
 
+            {/* Period */}
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                Budget Period
+              </label>
+
+              <select
+                name="period"
+                value={budgetData.period}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none dark:text-gray-200"
+              >
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            </div>
+
+            {/* Buttons */}
             <div className="flex items-center justify-between pt-4">
-              <button 
+              <button
                 type="button"
                 onClick={() => setShowAddForm(false)}
                 className="px-6 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-bold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
                 Cancel
               </button>
-              <button 
+
+              <button
                 type="submit"
                 className="px-8 py-2.5 bg-emerald-500 text-white rounded-xl text-sm font-bold hover:bg-emerald-600 shadow-lg shadow-emerald-500/20 transition-all"
               >
-                Continue to Categories
+                Create Budget
               </button>
             </div>
+
           </form>
         </div>
       </div>
@@ -181,14 +233,7 @@ export function Budget() {
         <div className="p-6 border-b border-gray-50 dark:border-gray-800 flex items-center justify-between gap-4">
           
           <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <Filter className="w-4 h-4" />
-              Filter
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <ArrowUpDown className="w-4 h-4" />
-              Sort
-            </button>
+            
             <button className="flex items-center gap-2 bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-emerald-600 transition-colors">
               <Plus className="w-4 h-4" />
               Add Category

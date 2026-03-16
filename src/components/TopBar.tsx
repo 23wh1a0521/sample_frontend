@@ -27,13 +27,7 @@ export function TopBar() {
       </div>
 
       <div className="flex items-center gap-3">
-        <button 
-          onClick={toggleTheme}
-          className="p-2 text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
-          title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-        >
-          {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-        </button>
+        
         <Link to="/notifications" className="p-2 text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg relative transition-colors">
           <Bell className="w-5 h-5" />
           <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-white dark:border-gray-900"></span>

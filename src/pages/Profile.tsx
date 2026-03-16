@@ -102,37 +102,7 @@ export function Profile() {
             </form>
           </div>
 
-          <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
-            <h2 className="text-lg font-bold text-gray-900 mb-1">Financial Preferences</h2>
-            <p className="text-sm text-gray-500 mb-8">Set your default financial preferences.</p>
-
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Default Currency</label>
-                <select className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 appearance-none">
-                  <option>USD - US Dollar</option>
-                  <option>EUR - Euro</option>
-                  <option>GBP - British Pound</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Default Wallet</label>
-                <select className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 appearance-none">
-                  <option>Main Savings</option>
-                  <option>Emergency Fund</option>
-                </select>
-              </div>
-
-              <div className="flex items-center justify-end gap-4 pt-4">
-                <button type="button" className="px-6 py-2 text-xs font-bold text-gray-500 hover:text-gray-900">Reset</button>
-                <button type="submit" className="flex items-center gap-2 bg-emerald-500 text-white px-6 py-2 rounded-xl text-xs font-bold hover:bg-emerald-600 transition-all">
-                  <Save className="w-4 h-4" />
-                  Save Preferences
-                </button>
-              </div>
-            </div>
-          </div>
+          
         </div>
       </div>
     </div>
