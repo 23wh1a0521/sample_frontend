@@ -1,4 +1,4 @@
-import type { Wallet, BudgetCategory, Goal, Notification } from './types';
+import type { Wallet, BudgetCategory, Goal, Notification, Investment, Saving, Debt } from './types';
 
 export const MOCK_USER = {
   id: '1',
@@ -62,6 +62,74 @@ export const MOCK_GOALS: Goal[] = [
     targetAmount: 20000,
     currentAmount: 2778.45,
     status: 'On Track',
+  },
+];
+
+export const MOCK_INVESTMENTS: Investment[] = [
+  {
+    id: '1',
+    name: 'Apple Inc.',
+    type: 'Stock',
+    amount: 5000,
+    currentValue: 5450.25,
+    change: 450.25,
+    changePercentage: 9.0,
+    lastUpdated: 'Apr 15',
+  },
+  {
+    id: '2',
+    name: 'S&P 500 Index Fund',
+    type: 'ETF',
+    amount: 10000,
+    currentValue: 10234.56,
+    change: 234.56,
+    changePercentage: 2.34,
+    lastUpdated: 'Apr 14',
+  },
+];
+
+export const MOCK_SAVINGS: Saving[] = [
+  {
+    id: '1',
+    name: 'House Down Payment',
+    category: 'Real Estate',
+    targetAmount: 50000,
+    currentAmount: 12500,
+    status: 'On Track',
+    deadline: 'Dec 2025',
+  },
+  {
+    id: '2',
+    name: 'Retirement Fund',
+    category: 'Long Term',
+    targetAmount: 1000000,
+    currentAmount: 45000,
+    status: 'On Track',
+  },
+];
+
+export const MOCK_DEBTS: Debt[] = [
+  {
+    id: '1',
+    name: 'Student Loan',
+    type: 'Education',
+    totalAmount: 35000,
+    paidAmount: 12000,
+    interestRate: 4.5,
+    minimumPayment: 350,
+    dueDate: 'May 01',
+    status: 'On Track',
+  },
+  {
+    id: '2',
+    name: 'Credit Card',
+    type: 'Personal',
+    totalAmount: 5000,
+    paidAmount: 1500,
+    interestRate: 18.9,
+    minimumPayment: 150,
+    dueDate: 'Apr 25',
+    status: 'Behind',
   },
 ];
 

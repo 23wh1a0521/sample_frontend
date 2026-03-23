@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bell, Moon, Sun, PanelLeft, LogOut } from 'lucide-react';
+import {  Bell,  Sun, PanelLeft, LogOut } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { MOCK_USER } from '../constants';
 import { useTheme } from '../context/ThemeContext';
@@ -24,6 +24,8 @@ export function TopBar() {
         >
           <PanelLeft className="w-5 h-5" />
         </button>
+
+        
       </div>
 
       <div className="flex items-center gap-3">

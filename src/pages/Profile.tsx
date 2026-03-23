@@ -1,8 +1,19 @@
 import React from 'react';
 import { MOCK_USER } from '../constants';
 import { Camera, Mail, Phone, LogOut, ChevronRight, Save } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 
 export function Profile() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // 1. clear auth data
+    localStorage.removeItem("token"); // or whatever you stored
+    localStorage.removeItem("user");
+
+    // 2. redirect to login page
+    navigate('/');
+  };
   return (
     <div className="max-w-5xl mx-auto space-y-8">
       <div>
@@ -37,7 +48,10 @@ export function Profile() {
             </div>
           </div>
 
-          <button className="w-full py-2 flex items-center justify-center gap-2 border border-gray-100 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-50 transition-all">
+          <button
+            onClick={handleLogout}
+            className="w-full py-2 flex items-center justify-center gap-2 border border-gray-100 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-50 transition-all"
+          >
             <LogOut className="w-4 h-4" />
             Sign Out
           </button>

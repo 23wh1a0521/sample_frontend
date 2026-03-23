@@ -5,6 +5,10 @@ import {
   Wallet, 
   PieChart, 
   Target, 
+  TrendingUp,
+  PiggyBank,
+  CreditCard,
+  Bot,
   BarChart3, 
   MessageSquareText,
   LogOut
@@ -18,6 +22,9 @@ const navItems = [
   { icon: Wallet, label: 'Wallets', href: '/wallets' },
   { icon: PieChart, label: 'Budget', href: '/budget' },
   { icon: Target, label: 'Goals', href: '/goals' },
+  { icon: TrendingUp, label: 'Investments', href: '/investments' },
+  { icon: PiggyBank, label: 'Savings', href: '/savings' },
+  { icon: CreditCard, label: 'Debts', href: '/debts' },
   { icon: BarChart3, label: 'Reports', href: '/reports' },
 ];
 
@@ -59,6 +66,23 @@ export function Sidebar() {
             {!isCollapsed && <span className="truncate">{item.label}</span>}
           </NavLink>
         ))}
+
+        <div className="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800">
+          <NavLink
+            to="/finance-guru"
+            title={isCollapsed ? "Finance Guru" : undefined}
+            className={({ isActive }) => cn(
+              "flex items-center gap-3 px-4 py-3 rounded-xl transition-colors text-sm font-medium",
+              isCollapsed && "justify-center px-0",
+              isActive 
+                ? "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-500" 
+                : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
+            )}
+          >
+            <Bot className="w-5 h-5 shrink-0" />
+            {!isCollapsed && <span className="truncate">Finance Guru</span>}
+          </NavLink>
+        </div>
       </nav>
 
       <div className="p-4">
@@ -108,3 +132,5 @@ export function Sidebar() {
     </aside>
   );
 }
+
+      

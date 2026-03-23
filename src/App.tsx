@@ -7,6 +7,10 @@ import { Dashboard } from './pages/Dashboard';
 import { Wallets } from './pages/Wallets';
 import { Budget } from './pages/Budget';
 import { Goals } from './pages/Goals';
+import { Investments } from './pages/Investments';
+import { Savings } from './pages/Savings';
+import { Debts } from './pages/Debts';
+import { FinanceGuru } from './pages/FinanceGuru';
 import { Reports } from './pages/Reports';
 import { AskAgent } from './pages/AskAgent';
 import { Profile } from './pages/Profile';
@@ -33,6 +37,10 @@ export default function App() {
           <Route path="/wallets" element={<Wallets />} />
           <Route path="/budget" element={<Budget />} />
           <Route path="/goals" element={<Goals />} />
+          <Route path="/investments" element={<Investments />} />
+          <Route path="/savings" element={<Savings />} />
+          <Route path="/debts" element={<Debts />} />
+          <Route path="/finance-guru" element={<FinanceGuru />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/ask-agent" element={<AskAgent />} />
           <Route path="/profile" element={<Profile />} />

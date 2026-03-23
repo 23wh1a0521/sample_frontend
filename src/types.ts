@@ -35,6 +35,40 @@ export interface Goal {
   linkedWallet?: string;
 }
 
+export interface Investment {
+  id: string;
+  name: string;
+  type: string;
+  amount: number;
+  currentValue: number;
+  change: number;
+  changePercentage: number;
+  lastUpdated: string;
+}
+
+export interface Saving {
+  id: string;
+  name: string;
+  category: string;
+  targetAmount: number;
+  currentAmount: number;
+  deadline?: string;
+  status: 'On Track' | 'Completed' | 'Behind';
+  linkedWallet?: string;
+}
+
+export interface Debt {
+  id: string;
+  name: string;
+  type: string;
+  totalAmount: number;
+  paidAmount: number;
+  interestRate: number;
+  minimumPayment: number;
+  dueDate: string;
+  status: 'On Track' | 'Behind' | 'Paid';
+}
+
 export interface Notification {
   id: string;
   title: string;
